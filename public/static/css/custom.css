@@ -1,0 +1,9 @@
+.brand-sidebar .brand-logo {
+	font-size: 2.1rem;
+	line-height: 0;
+	position: relative !important;
+	display: inline-block;
+	margin: 1px 0;
+	padding: 22px 0px 14px;
+	color: #333;
+  }
