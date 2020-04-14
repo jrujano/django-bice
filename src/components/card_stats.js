@@ -21,10 +21,9 @@ class CardStats extends Component {
       }
       )
       .then(resp => {
-        console.log(resp);
+        
         this.setState({cobres: resp.data});
-        console.clear();
-        console.log(resp);
+       
       })
   }
 

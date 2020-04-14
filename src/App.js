@@ -12,7 +12,7 @@ import CardStats from './components/card_stats';
 import FooterMat from './components/footer_mat';
 
 import DataMovies from './components/datamovies';
-
+import RegisterUser from './components/register';
 class App extends Component {
 
   constructor(props) {
@@ -24,6 +24,8 @@ class App extends Component {
       login: localStorage.getItem('logged_in') ? true : false,
       username: '',
       shown: false,
+      register: false,
+      reload:false
     };
   }
 
@@ -35,6 +37,17 @@ class App extends Component {
         token: localStorage.getItem('token')
       });
     window.location.reload(false);
+
+  }
+  updateStateRegister() {
+
+    this.setState(
+      {
+        register: !this.state.register,
+       
+      });
+    
+      
 
   }
 
@@ -66,7 +79,12 @@ class App extends Component {
       );
     }else{
         
-        return <Login updateParent={ this.updateState.bind(this) }></Login>
+        return (
+          <div>
+          <RegisterUser updateParent={ this.updateStateRegister.bind(this) } register={ this.state.register} updateRegister= {this.updateStateRegister.bind(this)}/>
+          <Login        updateParent={ this.updateState.bind(this) }         register={ this.state.register} updateRegister= {this.updateStateRegister.bind(this)}/>
+          </div>
+          );
       }
     }
     
