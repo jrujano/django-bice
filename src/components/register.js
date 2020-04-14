@@ -46,13 +46,13 @@ class RegisterUser extends Component {
             "password": this.state.password,
             "email": this.state.email
         }
-        console.log(payload);
+        // console.log(payload);
         const resp = await axios.post(
             // 'http://127.0.0.1:8000/account/user/create/', payload
              'https://django-bice.herokuapp.com/account/user/create/', payload
         );
 
-        console.log(resp);
+        // console.log(resp);
 
 
 

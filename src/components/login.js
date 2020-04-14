@@ -54,11 +54,11 @@ class Login extends Component {
         localStorage.setItem('token_refresh', resp.data.refresh);
         this.handleUpdateParent();
         var decoded = jwt_decode(resp.data.access, { header: true });
-        console.log(decoded);
+        // console.log(decoded);
     }
 
     render() {
-        console.log (this.props.register);
+        // console.log (this.props.register);
         if (!this.props.register) {
             return (
            
