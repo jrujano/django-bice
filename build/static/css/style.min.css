@@ -4362,7 +4362,7 @@ span.badge.pill {
     font-family: 'Material Icons';
     font-weight: 400;
     font-style: normal;
-    src: local('Material Icons'), local('MaterialIcons-Regular'), url(https://django-bice.herokuapp.com/static/fonts/MaterialIcons-Regular.ttf) format('truetype'), url(https://django-bice.herokuapp.com/static/fonts/MaterialIcons-Regular.ttf) format('woff2'), url(https://django-bice.herokuapp.com/static/fonts/MaterialIcons-Regular.ttf) format('woff'), url(https://django-bice.herokuapp.com/static/fonts/MaterialIcons-Regular.ttf)
+    src: local('Material Icons'), local('MaterialIcons-Regular'), url(fonts/MaterialIcons-Regular.ttf) format('truetype'), url(fonts/MaterialIcons-Regular.ttf) format('woff2'), url(fonts/MaterialIcons-Regular.ttf) format('woff'), url(fonts/MaterialIcons-Regular.ttf)
 }
 
 .material-icons {
