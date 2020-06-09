@@ -44,7 +44,7 @@ class Login extends Component {
         }
 
         const resp = await axios.post(
-             //'http://127.0.0.1:8000/account/token/obtain/', payload
+//             'http://127.0.0.1:8000/account/token/obtain/', payload
              'https://django-bice.herokuapp.com/account/token/obtain/', payload
         );
 

@@ -42,6 +42,18 @@ const columns = [
         right: true,
     },
     {
+        name: 'Apertura',
+        selector: 'funcionamiento_hora_apertura',
+        sortable: true,
+        right: true,
+    },
+     {
+        name: 'Cierre',
+        selector: 'funcionamiento_hora_cierre',
+        sortable: true,
+        right: true,
+    },
+    {
         name: 'Comuna',
         selector: 'comuna_nombre',
         sortable: true,
@@ -50,11 +62,15 @@ const columns = [
     {
         name: 'Dirección',
         selector: 'local_direccion',
-        cell: row => <div style={{ padding: '5px' }}>{row.local_direccion}  <a href={`https://maps.google.com/?q=${row.local_lat},${row.local_lng}`} target="_blank">Abrir</a></div>,
+        cell: row => <div style={{ padding: '5px' }}>{row.local_direccion}  <a href={`https://www.google.com/maps/place/${row.local_direccion}/@-${row.local_lat},${row.local_lng}`} target="_blank">Abrir</a></div>,
+    },
+     {
+        name: 'Localidad',
+        selector: 'localidad_nombre',
+        sortable: true,
+        right: true,
+    },
 
-
-
-    }
 
 
 ];
