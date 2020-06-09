@@ -44,8 +44,8 @@ class Login extends Component {
         }
 
         const resp = await axios.post(
-            // 'http://127.0.0.1:8000/account/token/obtain/', payload
-             'https://django-bice.herokuapp.com/account/token/obtain/', payload
+             'http://127.0.0.1:8000/account/token/obtain/', payload
+//             'https://django-bice.herokuapp.com/account/token/obtain/', payload
         );
 
 
@@ -54,7 +54,7 @@ class Login extends Component {
         localStorage.setItem('token_refresh', resp.data.refresh);
         this.handleUpdateParent();
         var decoded = jwt_decode(resp.data.access, { header: true });
-        // console.log(decoded);
+        console.log(decoded);
     }
 
     render() {

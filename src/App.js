@@ -6,12 +6,13 @@ import './App.css';
 import Login from './components/login';
 import HeaderMat from './components/header_mat';
 import Sidenav from './components/sidenav';
-import CardStats from './components/card_stats';
+// import CardStats from './components/card_stats';
 // import ChartDashboard from './components/chart_dashboard';
 // import TableCobre from './components/data_table';
 import FooterMat from './components/footer_mat';
 
-import DataMovies from './components/datamovies';
+//import DataMovies from './components/datamovies';
+import DataFarm from './components/datafarm';
 import RegisterUser from './components/register';
 class App extends Component {
 
@@ -62,10 +63,10 @@ class App extends Component {
               <div className="col s12">
                 <div className="container">
                   <div className="section">
-                    <CardStats shown={this.state.shown} />
+                    {/* <CardStats shown={this.state.shown} />*/}
                     {/* <ChartDashboard></ChartDashboard> */}
                     {/* <TableCobre></TableCobre> */}
-                    <DataMovies></DataMovies>
+                    <DataFarm></DataFarm>
                   </div>
                   <div className="content-overlay"></div>
                 </div>

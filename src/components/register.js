@@ -52,7 +52,7 @@ class RegisterUser extends Component {
              'https://django-bice.herokuapp.com/account/user/create/', payload
         );
 
-        // console.log(resp);
+        console.log(resp);
 
 
 

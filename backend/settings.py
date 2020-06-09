@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'corsheaders',
     'account.apps.AccountConfig',
+    'farmacias.apps.FarmaciasConfig',
 ]
 
 MIDDLEWARE = [
@@ -170,5 +171,11 @@ SIMPLE_JWT = {
 
 CORS_ORIGIN_ALLOW_ALL= True
 CORS_ORIGIN_WHITELIST = (
-    'http://localhost:3000','https://www.indecon.online'
+    'http://localhost:3000',
 )
+
+LANGUAGE_CODE = 'es'
+TIME_ZONE = 'America/Santiago'
+USE_I18N = True
+USE_L10N = True
+USE_TZ = True
