@@ -84,7 +84,7 @@ class DataFarm extends Component {
         this.setState({ selectedRows: state.selectedRows });
     }
     componentDidMount() {
-        axios.get('http://localhost:8000/farms/v1/list/', {
+        axios.get('https://django-bice.herokuapp.com/farms/v1/list/', {
             headers: this.state.header
         })
             .then(
