@@ -1,136 +1,202 @@
-
 import React, { Component } from 'react';
-
-import DataTable, { createTheme } from 'react-data-table-component';
-// import Button from '@material-ui/core/Button';
 import axios from 'axios';
+import DataTable from 'react-data-table-component';
 
-
-createTheme('solarized', {
-    text: {
-        primary: '#268bd2',
-        secondary: '#2aa198',
-    },
-    background: {
-        default: '#002b36',
-    },
-    context: {
-        background: '#cb4b16',
-        text: '#FFFFFF',
-    },
-    divider: {
-        default: '#073642',
-    },
-    action: {
-        button: 'rgba(0,0,0,.54)',
-        hover: 'rgba(0,0,0,.08)',
-        disabled: 'rgba(0,0,0,.12)',
-    },
-});
-// const actions = <Button key="add">Add</Button>;
 const columns = [
-    {
-        name: 'Nombre',
-        selector: 'local_nombre',
-        sortable: true,
-        cell: row => <div><div style={{ fontWeight: 700 }}>{row.local_nombre}</div>{row.local_telefono}</div>,
-    },
-    {
-        name: 'Dia',
-        selector: 'funcionamiento_dia',
-        sortable: true,
-        right: true,
-    },
-    {
-        name: 'Apertura',
-        selector: 'funcionamiento_hora_apertura',
-        sortable: true,
-        right: true,
-    },
-     {
-        name: 'Cierre',
-        selector: 'funcionamiento_hora_cierre',
-        sortable: true,
-        right: true,
-    },
-    {
-        name: 'Comuna',
-        selector: 'comuna_nombre',
-        sortable: true,
-        right: true,
-    },
-    {
-        name: 'Dirección',
-        selector: 'local_direccion',
-        cell: row => <div style={{ padding: '5px' }}>{row.local_direccion}  <a href={`https://www.google.com/maps/place/${row.local_direccion}/@-${row.local_lat},${row.local_lng}`} target="_blank">Abrir</a></div>,
-    },
-     {
-        name: 'Localidad',
-        selector: 'localidad_nombre',
-        sortable: true,
-        right: true,
-    },
-
-
-
+  {
+    name: 'Nombre',
+    selector: 'local_nombre',
+    sortable: true,
+    cell: row => <div><div style={{ fontWeight: 700 }}>{row.local_nombre}</div>{row.local_telefono}</div>,
+  },
+  {
+    name: 'Dia',
+    selector: 'funcionamiento_dia',
+    sortable: true,
+    right: true,
+  },
+  {
+    name: 'Apertura',
+    selector: 'funcionamiento_hora_apertura',
+    sortable: true,
+    right: true,
+  },
+  {
+    name: 'Cierre',
+    selector: 'funcionamiento_hora_cierre',
+    sortable: true,
+    right: true,
+  },
+  {
+    name: 'Comuna',
+    selector: 'comuna_nombre',
+    sortable: true,
+    right: true,
+  },
+  {
+    name: 'Dirección',
+    selector: 'local_direccion',
+    cell: row => <div style={{ padding: '5px' }}>{row.local_direccion}</div>,
+  },
+  {
+    name: 'Mapa',
+    selector: 'local_direccion',
+    cell: row => <div style={{ padding: '5px' }}><a href={`https://www.google.com/maps/place/${row.local_direccion}/@-${row.local_lat},${row.local_lng}`} target="_blank" rel="noopener noreferrer">Abrir</a></div>,
+  },
+  {
+    name: 'Localidad',
+    selector: 'localidad_nombre',
+    sortable: true,
+    right: true,
+  },
 ];
-const handleChange = (state) => {
-    console.log('Selected Rows: ', state.selectedRows);
-};
-
-
-// const handleClearRows = () => {
-//     this.setState({ toggledClearRows: !this.state.toggledClearRows })
-// }
 
 class DataFarm extends Component {
 
-    state = {
-        farms: [],
-        header: {
-            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3ZjI2ZTBjMDBkOGRlNjUxODc3ZjhjOTYyZjcwNDQ0NSIsInN1YiI6IjVlODQxYzUwY2I2ZGI1MDAxOGE2ZjExMyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.ZjZRTDlnD77AkjyaRsSnSyUxARf84Ot0SiKSFkyQI9k',
+  state = {
+    comunas: [],
+    data: [],
+    loading: false,
+    totalRows: 0,
+    perPage: 15,
+    selectedOption: null,
+    inputValue: '', 
+    selectedComuna: "",
+    validationError: ""
 
-        },
-        toggledClearRows: false,
-        perPage: 50,
-        total_results :0
+
+  };
+
+  async componentDidMount() {
+    const { perPage } = this.state;
+
+    this.setState({ loading: true });
+
+    const response = await axios.get(
+      `http://localhost:8000/farms/v1/list/?page=1&per_page=${perPage}&delay=1`,
+    );
+
+    const response_comuna = await axios.get(
+      `http://localhost:8000/farms/v1/comu/`,
+    );
+
+    let comunaFromApi=response_comuna.data.map(comuna => {
+      return {value: comuna.fk_comuna, display: comuna.comuna_nombre}
+    });
+    this.setState({
+      data: response.data.results,
+      totalRows: response.data.pagination.total,
+      perPage: response.data.pagination.per_page,
+      loading: false,
+      comunas: [
+        {
+          value: "",
+          display:
+            "(Comuna....)"
+        }
+      ].concat(comunaFromApi)
+
+    });
+  }
+
+  handlePageChange = async page => {
+    const { perPage } = this.state;
+    const { selectedComuna } = this.state;
+    console.log(selectedComuna);
+    let url =``;
+    this.setState({ loading: true });
+    if (selectedComuna>0) {
+      url = `http://localhost:8000/farms/v1/list/?page=${page}&per_page=${perPage}&delay=1&id_comuna=${selectedComuna}`;
+
+
+    }else{
+      url = `http://localhost:8000/farms/v1/list/?page=${page}&per_page=${perPage}&delay=1`;
+        
     }
+    const response = await axios.get(
+      `${url}`,
+    );
 
-    updateState = state => {
-        this.setState({ selectedRows: state.selectedRows });
-    }
-    componentDidMount() {
-        axios.get('https://django-bice.herokuapp.com/farms/v1/list/', {
-            headers: this.state.header
-        })
-            .then(
-                resp => {
+    this.setState({
+      loading: false,
+      data: response.data.results,
+      perPage: response.data.pagination.per_page,
+    });
+  }
 
-                    this.setState({ farms: resp.data });
-                    this.setState({ total_results: resp.data.total_results });
-                    console.log(resp.data);
-                    console.log(this.state.farms);
-                }
-            )
+  handlePerRowsChange = async (perPage, page) => {
+    this.setState({ loading: true });
 
-    }
+    const response = await axios.get(
+      `http://localhost:8000/farms/v1/list/?page=${page}&per_page=${perPage}&delay=1`,
+    );
+
+    this.setState({
+      loading: false,
+      data: response.data.results,
+      perPage: response.data.pagination.per_page,
+    });
+  }
+
+  handleChangeSelect = async (event) => {
+    this.setState({ loading: true });
+    let id_comuda=event.target.value;
+    
+    const { perPage } = this.state;    
+    const { selectedComuna } = this.state;    
+    
+    
+    console.log(event.target.value )
+    console.log(this.selectedComuna)
+    const response = await axios.get(
+      `http://localhost:8000/farms/v1/list/?page=1&per_page=${perPage}&delay=1&id_comuna=${id_comuda}`,
+    );
+    
+    this.setState({
+      selectedComuna:id_comuda,
+      data: response.data.results,
+      totalRows: response.data.pagination.total,
+      perPage: response.data.pagination.per_page,
+      loading: false,
+    });
+   
+  };
+   
+  render() {
+    const { loading, data, totalRows } = this.state;
 
 
-    render() {
-        return (
-            <DataTable
-                title="Lista de Farmacias"
-                columns={columns}
-                data={this.state.farms}
-                selectableRows
-                onSelectedRowsChange={handleChange}
-                clearSelectedRows={this.state.toggledClearRows}
-                pagination
-                
-            />
-        )
-    }
-};
+    return (
+      <React.Fragment>
+        
+        <select class="browser-default"
+          value={this.state.selectedComuna}
+          onChange={this.handleChangeSelect}
 
+        >
+          {this.state.comunas.map(comuna => (
+            <option
+              key={comuna.value}
+              value={comuna.value}
+            >
+              {comuna.display}
+            </option>
+          ))}
+        </select>
+        <DataTable
+          title="Lista de Farmacias"
+          columns={columns}
+          data={data}
+          progressPending={loading}
+          pagination
+          paginationServer
+          paginationTotalRows={totalRows}
+          onChangeRowsPerPage={this.handlePerRowsChange}
+          onChangePage={this.handlePageChange}
+        />
+      </React.Fragment>
+    );
+  }
+}
 
 export default DataFarm;
