@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import DataTable from 'react-data-table-component';
 
+
 const columns = [
   {
     name: 'Nombre',
@@ -10,23 +11,12 @@ const columns = [
     cell: row => <div><div style={{ fontWeight: 700 }}>{row.local_nombre}</div>{row.local_telefono}</div>,
   },
   {
-    name: 'Dia',
-    selector: 'funcionamiento_dia',
+    name: 'Dirección',
+    selector: 'local_direccion',
     sortable: true,
     right: true,
   },
-  {
-    name: 'Apertura',
-    selector: 'funcionamiento_hora_apertura',
-    sortable: true,
-    right: true,
-  },
-  {
-    name: 'Cierre',
-    selector: 'funcionamiento_hora_cierre',
-    sortable: true,
-    right: true,
-  },
+
   {
     name: 'Comuna',
     selector: 'comuna_nombre',
@@ -34,54 +24,46 @@ const columns = [
     right: true,
   },
   {
-    name: 'Dirección',
-    selector: 'local_direccion',
-    cell: row => <div style={{ padding: '5px' }}>{row.local_direccion}</div>,
-  },
-  {
     name: 'Mapa',
     selector: 'local_direccion',
     cell: row => <div style={{ padding: '5px' }}><a href={`https://www.google.com/maps/place/${row.local_direccion}/@-${row.local_lat},${row.local_lng}`} target="_blank" rel="noopener noreferrer">Abrir</a></div>,
-  },
-  {
-    name: 'Localidad',
-    selector: 'localidad_nombre',
-    sortable: true,
-    right: true,
-  },
+  }
 ];
 
 class DataFarm extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      comunas: [],
+      data: [],
+      loading: false,
+      totalRows: 0,
+      perPage: 15,
+      selectedOption: null,
+      inputValue: '',
+      selectedComuna: '',
+      validationError: '',
+      localname: '',
+      page: 1,
 
-  state = {
-    comunas: [],
-    data: [],
-    loading: false,
-    totalRows: 0,
-    perPage: 15,
-    selectedOption: null,
-    inputValue: '', 
-    selectedComuna: "",
-    validationError: ""
-
-
-  };
+    };
+  }
 
   async componentDidMount() {
     const { perPage } = this.state;
-
+    let url = `https://django-bice.herokuapp.com/farms/v1/list/?page=1&per_page=${perPage}&delay=1`;
     this.setState({ loading: true });
 
     const response = await axios.get(
-      `https://django-bice.herokuapp.com/farms/v1/list/?page=1&per_page=${perPage}&delay=1`,
+      url,
     );
 
     const response_comuna = await axios.get(
       `https://django-bice.herokuapp.com/farms/v1/comu/`,
     );
 
-    let comunaFromApi=response_comuna.data.map(comuna => {
-      return {value: comuna.fk_comuna, display: comuna.comuna_nombre}
+    let comunaFromApi = response_comuna.data.map(comuna => {
+      return { value: comuna.fk_comuna, display: comuna.comuna_nombre }
     });
     this.setState({
       data: response.data.results,
@@ -102,16 +84,22 @@ class DataFarm extends Component {
   handlePageChange = async page => {
     const { perPage } = this.state;
     const { selectedComuna } = this.state;
+    const { localname } = this.state;
     console.log(selectedComuna);
-    let url =``;
+    let url = `https://django-bice.herokuapp.com/farms/v1/list/`;
     this.setState({ loading: true });
-    if (selectedComuna>0) {
-      url = `https://django-bice.herokuapp.com/farms/v1/list/?page=${page}&per_page=${perPage}&delay=1&id_comuna=${selectedComuna}`;
+    if (selectedComuna > 0) {
+      url = url + `?page=${page}&per_page=${perPage}&delay=1&id_comuna=${selectedComuna}`;
 
 
-    }else{
-      url = `https://django-bice.herokuapp.com/farms/v1/list/?page=${page}&per_page=${perPage}&delay=1`;
-        
+    } else {
+      url = url + `?page=${page}&per_page=${perPage}&delay=1`;
+
+    }
+
+    if (localname !== 'undefined') {
+      url = url + `&nombre=${localname}`;
+
     }
     const response = await axios.get(
       `${url}`,
@@ -125,6 +113,7 @@ class DataFarm extends Component {
   }
 
   handlePerRowsChange = async (perPage, page) => {
+    console.log('handlePerRowsChange');
     this.setState({ loading: true });
 
     const response = await axios.get(
@@ -139,50 +128,81 @@ class DataFarm extends Component {
   }
 
   handleChangeSelect = async (event) => {
-    this.setState({ loading: true });
-    let id_comuda=event.target.value;
-    
-    const { perPage } = this.state;    
-    const { selectedComuna } = this.state;    
-    
-    
-    console.log(event.target.value )
-    console.log(this.selectedComuna)
+    this.setState(
+      {
+        loading: true,
+        localname: ''
+      }
+    );
+
+    let id_comuda = event.target.value;
+
+    const { perPage } = this.state;
+    const { localname } = this.state;
+    const { selectedComuna } = this.state;
+
+
+    console.log(event.target.value)
+    console.log("localname->" + localname)
     const response = await axios.get(
       `https://django-bice.herokuapp.com/farms/v1/list/?page=1&per_page=${perPage}&delay=1&id_comuna=${id_comuda}`,
     );
-    
+
     this.setState({
-      selectedComuna:id_comuda,
+      selectedComuna: id_comuda,
       data: response.data.results,
       totalRows: response.data.pagination.total,
       perPage: response.data.pagination.per_page,
       loading: false,
+      localname: ''
     });
-   
+
   };
-   
+  handleChangeLocalname = event => {
+ 
+    this.setState({
+      localname: event.target.value
+    }, () => {
+      this.handlePageChange(this.state.page);
+    });
+  }
+
+
   render() {
     const { loading, data, totalRows } = this.state;
 
 
     return (
       <React.Fragment>
-        
-        <select class="browser-default"
-          value={this.state.selectedComuna}
-          onChange={this.handleChangeSelect}
 
-        >
-          {this.state.comunas.map(comuna => (
-            <option
-              key={comuna.value}
-              value={comuna.value}
+
+        <div className="row margin">
+          <div className="input-field col s12">
+            <select class="browser-default"
+              value={this.state.selectedComuna}
+              onChange={this.handleChangeSelect}
+
             >
-              {comuna.display}
-            </option>
-          ))}
-        </select>
+              {this.state.comunas.map(comuna => (
+                <option
+                  key={comuna.value}
+                  value={comuna.value}
+                >
+                  {comuna.display}
+                </option>
+              ))}
+            </select>
+
+          </div>
+        </div>
+        <div className="row margin">
+          <div className="input-field col s12">
+            <input id="localname" type="text" onChange={this.handleChangeLocalname} value={this.state.localname} />
+
+            <label htmlFor="localname" className="center-align">Local</label>
+          </div>
+        </div>
+
         <DataTable
           title="Lista de Farmacias"
           columns={columns}
@@ -194,6 +214,7 @@ class DataFarm extends Component {
           onChangeRowsPerPage={this.handlePerRowsChange}
           onChangePage={this.handlePageChange}
         />
+
       </React.Fragment>
     );
   }

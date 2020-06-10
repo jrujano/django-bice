@@ -9,7 +9,7 @@ class FooterMat extends Component {
     return (
       <footer className="page-footer footer footer-static footer-dark gradient-45deg-indigo-purple gradient-shadow navbar-border navbar-shadow">
   <div className="footer-copyright">
-    <div className="container"><span>&copy; 2020-Abril</span>
+    <div className="container"><span>&copy; 2020-Junio</span>
       <span className="right hide-on-small-only"> Developed by <a href="https://www.linkedin.com/in/johan-rujano-28446241/">{ this.props.info }</a></span></div>
   </div>
 </footer>

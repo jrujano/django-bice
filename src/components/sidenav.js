@@ -10,23 +10,20 @@ class Sidenav extends Component {
           <h1 className="logo-wrapper"><a className="brand-logo darken-1" href="index.html">
             <img className="hide-on-med-and-down" src="https://pixinvent.com/materialize-material-design-admin-template//app-assets/images/logo/materialize-logo-color.png" alt="materialize logo" />
             <img className="show-on-medium-and-down hide-on-med-and-up" src="https://pixinvent.com/materialize-material-design-admin-template//app-assets/images/logo/materialize-logo.png" alt="materialize logo" />
-            <span className="logo-text hide-on-med-and-down">Materialize</span></a>
+            <span className="logo-text hide-on-med-and-down">Consorcio</span></a>
             <a className="navbar-toggler" href="/#">
               <i className="material-icons">radio_button_checked</i></a>
             </h1>
         </div>
         <ul className="sidenav sidenav-collapsible leftside-navigation collapsible sidenav-fixed menu-shadow" id="slide-out" data-menu="menu-navigation" data-collapsible="menu-accordion">
-          <li className="active bold"><a className="collapsible-header waves-effect waves-cyan " href="/#"><i className="material-icons">settings_input_svideo</i><span className="menu-title" data-i18n="Dashboard">Dashboard</span><span className="badge badge pill orange float-right mr-10">4</span></a>
+          <li className="active bold"><a className="collapsible-header waves-effect waves-cyan " href="/#"><i className="material-icons">settings_input_svideo</i><span className="menu-title" data-i18n="Dashboard">Dashboard</span>
+          {/* <span className="badge badge pill orange float-right mr-10">4</span> */}
+          </a>
             <div className="collapsible-body">
               <ul className="collapsible collapsible-sub" data-collapsible="accordion">
-                <li><a href="/#!"><i className="material-icons">radio_button_unchecked</i><span data-i18n="Modern">Cobre</span></a>
+                <li><a href="/#!"><i className="material-icons">radio_button_unchecked</i><span data-i18n="Modern">Farmacias</span></a>
                 </li>
-                <li><a href="/#!"><i className="material-icons">radio_button_unchecked</i><span data-i18n="eCommerce">Oro</span></a>
-                </li>
-                <li><a  href="/#!"><i className="material-icons">radio_button_unchecked</i><span data-i18n="Analytics">Plata</span></a>
-                </li>
-                <li><a href="/#!"><i className="material-icons">radio_button_unchecked</i><span data-i18n="Analytics">Dolar</span></a>
-                </li>
+               
               </ul>
             </div>
           </li>

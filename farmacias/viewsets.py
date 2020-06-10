@@ -41,6 +41,11 @@ class FarmView(generics.ListAPIView):
         id_comuna = self.request.GET.get("id_comuna")
         if id_comuna is not None:
             queryset_list = queryset_list.filter(fk_comuna=int(id_comuna))
+
+        nombre = self.request.GET.get("nombre")
+        if nombre is not None:
+            queryset_list = queryset_list.filter(local_nombre__icontains=nombre)
+
         return queryset_list.order_by("local_nombre")
 
 
