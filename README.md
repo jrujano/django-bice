@@ -34,7 +34,7 @@ Dentro del ambientevirtual del proyecto ejecutar
 python3 manage.py test 
 ```
 
-## Configurar ambiente local
+## Pasos para configurar ambiente local
 
 ## Instalar Virtuealenv
 
