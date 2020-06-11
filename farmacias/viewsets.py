@@ -5,6 +5,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 from rest_framework import generics
+from drf_yasg.utils import no_body, swagger_auto_schema
+
 from django.db.models import Count
 
 from .pagination import CustomPagination
@@ -13,12 +15,43 @@ from .models import Farmacia
 from .serializers import FarmaciaSerializer, ComunaSerializer
 
 
-class FarmaciaView(APIView):
-    permission_classes = (AllowAny,)
+class FarmView(generics.ListAPIView):
+    """Api de Farmacias.
 
-    def get(self, request,format=None):
-        queryset = Farmacia.objects.all()
-        if queryset.count()==0:
+    Parámetros de Filtros:
+
+        id_comuna -- Id para filtrar comunas
+
+        nombre -- Cadena para hacer busquedas por nombre local
+
+
+    Devuelve en la data de las farmacias:
+    
+        {
+            "pagination": {
+                "total": 1,
+                "per_page": 1,
+                "current_page": 1,
+                "last_page": 1,
+                "next_page_url": "http://localhost:8000/farms/v1/list/?page=2",
+                "previous_page_url": null
+            },
+            "results": [
+                {
+                "local_nombre": "AHUMADA",
+                "local_direccion": "PADRE ALBERTO HURTADO 60. INTERIOR LIDER",
+                "local_telefono": "+560227645558",
+                "local_lat": "-33.452695",
+                "local_lng": "-70.69151",
+                "comuna_nombre": "ESTACION CENTRAL",
+                "fk_comuna": 92
+                }
+            ]
+        }
+
+    Sin la data de las farmacias es nulo se conecta al API FARMANET.MINSAL.CL y sincroniza la data local:
+        
+        if self.queryset.count() == 0:
             payload = {'reg_id': 7}
             url = "https://farmanet.minsal.cl/maps/index.php/ws/getLocalesRegion?id_region=7"
             r = requests.get(url, params=payload)
@@ -26,11 +59,21 @@ class FarmaciaView(APIView):
                 data = escape.json_decode(r.text)
                 for item in data:
                     Farmacia.objects.create(**item)
-        farms = Farmacia.objects.all()
-        serializer = FarmaciaSerializer(farms, many=True)
-        return Response(serializer.data)
+            
 
-class FarmView(generics.ListAPIView):
+    
+    parameters:
+        - in: query
+          name: offset
+          schema:
+            type: integer
+          description: The number of items to skip before starting to collect the result set
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          description: The numbers of items to return
+    """
     permission_classes = (AllowAny,)
     queryset = Farmacia.objects.all()
     serializer_class = FarmaciaSerializer
@@ -48,7 +91,7 @@ class FarmView(generics.ListAPIView):
 
         return queryset_list.order_by("local_nombre")
 
-
+    
     def get(self, request, *args, **kwargs):
         if self.queryset.count() == 0:
             payload = {'reg_id': 7}
@@ -73,6 +116,11 @@ class FarmView(generics.ListAPIView):
     #                     })
 
 class ComunaView(generics.ListAPIView):
+    """Api de Listado de Comunas.
+    Este endpoint devuelve un listado de las comunas
+    
+    """
+  
     permission_classes = (AllowAny,)
     queryset = Farmacia.objects.all()
     serializer_class = ComunaSerializer
