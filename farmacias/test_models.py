@@ -89,6 +89,10 @@ class FarmaciaTest(TestCase):
                                 localidad_nombre="ESTACION CENTRAL")
 
     def test_locate_farm(self):
+        """
+        Consultar datos de Farmacia
+        :return:
+        """
         farm_locate1 = Farmacia.objects.get(local_lat='-33.454613', local_lng='-70.690985')
         farm_locate2 = Farmacia.objects.get(local_lat='-33.596344', local_lng='-70.705373')
 
@@ -98,6 +102,10 @@ class FarmaciaTest(TestCase):
             farm_locate2.get_locate(), "AVENIDA SAN JOSé N° 501, LOCAL 3 Lat: -33.596344 Lon:-70.705373")
 
     def test_get_all_comunas(self):
+        """
+        Test unitarios de listado de comunas
+        :return:
+        """
         response = client.get(reverse('get_comunas'))
         comunas = Farmacia.objects.values('comuna_nombre', 'fk_comuna').annotate(dcount=Count('comuna_nombre'))
         serializer = ComunaSerializer(comunas, many=True)
@@ -105,6 +113,10 @@ class FarmaciaTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_get_all_farms(self):
+        """
+        Test Unitario listado total de Farmacia
+        :return:
+        """
         response = client.get(reverse('get_farms'))
         farmacias = Farmacia.objects.all().order_by("-id")
         serializer = FarmaciaSerializer(farmacias, many=True)
@@ -112,13 +124,16 @@ class FarmaciaTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_get_farms_comunas(self):
-        # response = client.get(reverse('get_farms', id_comuna=92))
+        """
+        Test Unitario para farmacias filtrado
+        :return:
+        """
         url=str((reverse('get_farms')))+"?id_comuna=92"
         response = client.get(url)
 
         farmacias = Farmacia.objects.filter(fk_comuna=92).order_by("-id")
         serializer = FarmaciaSerializer(farmacias, many=True)
 
-       
+
         self.assertEqual(response.data["results"], serializer.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
