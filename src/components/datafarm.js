@@ -46,8 +46,8 @@ const columns = [
 class DataFarm extends Component {
   constructor(props) {
     super(props);
-    this.domain ="http://localhost:8000";
-    // this.domain ="https://django-bice.herokuapp.com";
+    // this.domain ="http://localhost:8000";
+    this.domain ="https://django-bice.herokuapp.com";
     
     this.state = {
       comunas: [],
