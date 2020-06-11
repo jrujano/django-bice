@@ -25,3 +25,6 @@ class Farmacia(models.Model):
 
     def __str__(self):
         return self.local_nombre
+
+    def get_locate(self):
+        return self.local_direccion + ' Lat: ' + self.local_lat + ' Lon:' + self.local_lng

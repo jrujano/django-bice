@@ -24,8 +24,8 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     # path('v1/list/', FarmaciaView.as_view(), name="list_farm"),
-    path('v1/list/', FarmView.as_view()),
-    path('v1/comu/', ComunaView.as_view()),
+    path('v1/list/', FarmView.as_view(), name='get_farms'),
+    path('v1/comu/', ComunaView.as_view(), name='get_comunas'),
     re_path('api/docs/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     re_path(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
 

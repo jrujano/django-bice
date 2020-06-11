@@ -104,17 +104,7 @@ class FarmView(generics.ListAPIView):
                     Farmacia.objects.create(**item)
         return self.list(request, *args, **kwargs)
 
-    # def list(self, request, *args, **kwargs):
-    #     queryset = self.filter_queryset(self.get_queryset())
-    #
-    #     page = self.paginate_queryset(queryset)
-    #
-    #     serializer = self.get_serializer(queryset, many=True)
-    #     return Response({"pagination": {
-    #                         'total': queryset.count(),
-    #                         'per_page': 20},
-    #                     "results": serializer.data,
-    #                     })
+
 
 class ComunaView(generics.ListAPIView):
     """Api de Listado de Comunas.
