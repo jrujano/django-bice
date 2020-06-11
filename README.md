@@ -6,6 +6,9 @@ https://django-bice.herokuapp.com
 
 ## Api-Rest listado de Farmacias(Api-REST)
 https://django-bice.herokuapp.com/farms/v1/list/
+
+Servicio que sincroniza la data con el servicio de [https://farmanet.minsal.cl/](https://farmanet.minsal.cl/)
+almacena la información local y ejecutas las consultas solicitadas desde el front
 ```
 Filtros por Comuna
 https://django-bice.herokuapp.com/farms/v1/list/?id_comuna=[id]
@@ -17,10 +20,14 @@ Filtros por Nombre y Comuna
 https://django-bice.herokuapp.com/farms/v1/list/?id_comuna=[id]&nombre=[texto]
 ```
 ## Api-Rest listado de Comunas(Api-REST)
-https://django-bice.herokuapp.com/farms/v1/comu
+https://django-bice.herokuapp.com/farms/v1/comu/
 
 ## Api-rest de autenticacion 
 https://django-bice.herokuapp.com/account/token/obtain/
+
+## Api-rest de creacion de usuarios 
+https://django-bice.herokuapp.com/account/user/create/
+
 
 # Documentacion de API's
 
@@ -28,14 +35,15 @@ https://django-bice.herokuapp.com/farms/swagger/
 
 ## Pruebas unitarias
 
-Dentro del ambientevirtual del proyecto ejecutar
+Dentro del ambientevirtual del proyecto ejecutar comando 
 
 ```
 python3 manage.py test 
 ```
+Este casos de pruebas estas ubicadas en el archivo **farmacias/test_models.py**
 
-## Pasos para configurar ambiente local
 
+# Pasos para configurar ambiente local
 ## Instalar Virtuealenv
 
 [https://virtualenv.pypa.io/en/latest/](https://virtualenv.pypa.io/en/latest/)
@@ -127,5 +135,3 @@ Para Ejecuta la aplicación en modo de desarrollo. En el directorio del proyecto
   
 
 Abra [http://localhost:3000](http://localhost:3000) to para verlo en el navegador.
-
- 
