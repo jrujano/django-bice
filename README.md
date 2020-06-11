@@ -1,8 +1,45 @@
+## Admin de Proyecto (BACKEND)
+https://django-bice.herokuapp.com/admin
 
-  
+## Aplicacion Front
+https://django-bice.herokuapp.com
+
+## Api-Rest listado de Farmacias(Api-REST)
+https://django-bice.herokuapp.com/farms/v1/list/
+```
+Filtros por Comuna
+https://django-bice.herokuapp.com/farms/v1/list/?id_comuna=[id]
+
+Filtros por Nombre
+https://django-bice.herokuapp.com/farms/v1/list/?nombre=[texto]
+
+Filtros por Nombre y Comuna
+https://django-bice.herokuapp.com/farms/v1/list/?id_comuna=[id]&nombre=[texto]
+```
+## Api-Rest listado de Comunas(Api-REST)
+https://django-bice.herokuapp.com/farms/v1/comu
+
+## Api-rest de autenticacion 
+https://django-bice.herokuapp.com/account/token/obtain/
+
+# Documentacion de API's
+
+https://django-bice.herokuapp.com/farms/swagger/
+
+## Pruebas unitarias
+
+Dentro del ambientevirtual del proyecto ejecutar
+
+```
+python3 manage.py test 
+```
+
+## Configurar ambiente local
+
 ## Instalar Virtuealenv
 
 [https://virtualenv.pypa.io/en/latest/](https://virtualenv.pypa.io/en/latest/)
+
 
 ## Crear Virtuealenv
 
@@ -48,9 +85,9 @@ pip install -r requirements.txt
 ```
 Generar estructura de la base de Datos y el usuario SuperAdmin
 ```
-python manage.py makemigrations
-python manage.py migrate
-python manage.py createsuperuser
+python3 manage.py makemigrations
+python3 manage.py migrate
+python3 manage.py createsuperuser
 ```
 Ejecutar el backend
 
