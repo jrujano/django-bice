@@ -1,6 +1,27 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import DataTable from 'react-data-table-component';
+import { makeStyles } from '@material-ui/core/styles';
+import LinearProgress from '@material-ui/core/LinearProgress';
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    width: '100%',
+    '& > * + *': {
+      marginTop: theme.spacing(2),
+    },
+  },
+}));
+
+const LinearIndeterminate = () => {
+  const classes = useStyles();
+
+  return (
+    <div className={classes.root}>
+      <LinearProgress />
+    </div>
+  );
+};
 
 
 const columns = [
@@ -9,32 +30,31 @@ const columns = [
     selector: 'local_nombre',
     sortable: true,
     cell: row => <div><div style={{ fontWeight: 700 }}>{row.local_nombre}</div>{row.local_telefono}</div>,
+    hide: 'md',
+
   },
   {
     name: 'Dirección',
     selector: 'local_direccion',
-    sortable: true,
-    right: true,
+    wrap: true,
+    hide: 'md',
   },
 
   {
     name: 'Comuna',
     selector: 'comuna_nombre',
     sortable: true,
-    right: true,
   },
   
   {
     name: 'Latitud',
     selector: 'local_lat',
     sortable: true,
-    right: true,
   },
   {
     name: 'Longitud',
     selector: 'local_lng',
     sortable: true,
-    right: true,
   },
   {
     name: 'Mapa',
@@ -230,6 +250,7 @@ class DataFarm extends Component {
           paginationTotalRows={totalRows}
           onChangeRowsPerPage={this.handlePerRowsChange}
           onChangePage={this.handlePageChange}
+          progressComponent={<LinearIndeterminate />}
         />
 
       </React.Fragment>

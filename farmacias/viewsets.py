@@ -90,7 +90,7 @@ class FarmView(generics.ListAPIView):
         if nombre is not None:
             queryset_list = queryset_list.filter(local_nombre__icontains=nombre)
 
-        return queryset_list.order_by("local_nombre")
+        return queryset_list.order_by("-id")
 
     
     def get(self, request, *args, **kwargs):
