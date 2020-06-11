@@ -23,16 +23,32 @@ const columns = [
     sortable: true,
     right: true,
   },
+  
+  {
+    name: 'Latitud',
+    selector: 'local_lat',
+    sortable: true,
+    right: true,
+  },
+  {
+    name: 'Longitud',
+    selector: 'local_lng',
+    sortable: true,
+    right: true,
+  },
   {
     name: 'Mapa',
     selector: 'local_direccion',
     cell: row => <div style={{ padding: '5px' }}><a href={`https://www.google.com/maps/place/${row.local_direccion}/@-${row.local_lat},${row.local_lng}`} target="_blank" rel="noopener noreferrer">Abrir</a></div>,
-  }
+  },
 ];
 
 class DataFarm extends Component {
   constructor(props) {
     super(props);
+    this.domain ="http://localhost:8000";
+    // this.domain ="https://django-bice.herokuapp.com";
+    
     this.state = {
       comunas: [],
       data: [],
@@ -51,7 +67,8 @@ class DataFarm extends Component {
 
   async componentDidMount() {
     const { perPage } = this.state;
-    let url = `https://django-bice.herokuapp.com/farms/v1/list/?page=1&per_page=${perPage}&delay=1`;
+    console.log(this.domain );
+    let url = `${this.domain}/farms/v1/list/?page=1&per_page=${perPage}&delay=1`;
     this.setState({ loading: true });
 
     const response = await axios.get(
@@ -59,7 +76,7 @@ class DataFarm extends Component {
     );
 
     const response_comuna = await axios.get(
-      `https://django-bice.herokuapp.com/farms/v1/comu/`,
+      `${this.domain}/farms/v1/comu/`,
     );
 
     let comunaFromApi = response_comuna.data.map(comuna => {
@@ -86,7 +103,7 @@ class DataFarm extends Component {
     const { selectedComuna } = this.state;
     const { localname } = this.state;
     console.log(selectedComuna);
-    let url = `https://django-bice.herokuapp.com/farms/v1/list/`;
+    let url = `${this.domain}/farms/v1/list/`;
     this.setState({ loading: true });
     if (selectedComuna > 0) {
       url = url + `?page=${page}&per_page=${perPage}&delay=1&id_comuna=${selectedComuna}`;
@@ -117,7 +134,7 @@ class DataFarm extends Component {
     this.setState({ loading: true });
 
     const response = await axios.get(
-      `https://django-bice.herokuapp.com/farms/v1/list/?page=${page}&per_page=${perPage}&delay=1`,
+      `${this.domain}/farms/v1/list/?page=${page}&per_page=${perPage}&delay=1`,
     );
 
     this.setState({
@@ -145,7 +162,7 @@ class DataFarm extends Component {
     console.log(event.target.value)
     console.log("localname->" + localname)
     const response = await axios.get(
-      `https://django-bice.herokuapp.com/farms/v1/list/?page=1&per_page=${perPage}&delay=1&id_comuna=${id_comuda}`,
+      `${this.domain}/farms/v1/list/?page=1&per_page=${perPage}&delay=1&id_comuna=${id_comuda}`,
     );
 
     this.setState({
