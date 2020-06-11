@@ -23,6 +23,7 @@ class FarmView(generics.ListAPIView):
         id_comuna -- Id para filtrar comunas
 
         nombre -- Cadena para hacer busquedas por nombre local
+        
 
 
     Devuelve en la data de las farmacias:
